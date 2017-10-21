@@ -43,7 +43,7 @@
         <div class="small-12 columns">
             <ul>
               <template v-for="(value,index) in logs">
-                  <li v-if="value < 0" class="player-turn"> Player heals himself by {{value}} </li>
+                  <li v-if="value < 0" class="player-turn"> Player heals himself by {{-1 * value}} </li>
                   <li v-else-if="index % 2 === 0 && index > -1" class="player-turn"> Player hit monster by {{value}}  </li>
                   <li v-else class="monster-turn"> Monster hit player by {{value}}  </li>
               </template>
@@ -81,12 +81,12 @@
         this.updateMonster(damageToMonster)
       },
       heal: function() {
-        var damageToYou = Math.floor(Math.random() * 10)
+        var damageToYou = Math.floor(Math.random() * 10) + 1
         var damageToMonster = Math.floor(Math.random() * 7)
         this.you += damageToYou
-        this.monster -= damageToMonster
-        this.updatePlayer(-damageToYou)
+        this.you -= damageToMonster
         this.updateMonster(damageToMonster)
+        this.updatePlayer(-damageToYou)
       },
       giveUp: function() {
         this.start = false
@@ -109,6 +109,9 @@
             vm.monster = 100
             vm.logs = []
           }, 100)
+        }
+        else if (this.you >= 100) {
+          this.you = 100
         }
       },
       monster: function() {
