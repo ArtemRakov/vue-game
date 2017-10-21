@@ -12,42 +12,118 @@
         <div class="small-6 columns">
             <h1 class="text-center">YOU</h1>
             <div class="healthbar">
-                <div class="healthbar text-center" style="background-color: green; margin: 0; color: white;">
-
+                <div class="healthbar text-center" :style="{width: you + '%'}" style="background-color: green; margin: 0; color: white;">
+                    {{you}}
                 </div>
             </div>
         </div>
         <div class="small-6 columns">
             <h1 class="text-center">MONSTER</h1>
             <div class="healthbar">
-                <div class="healthbar text-center" style="background-color: green; margin: 0; color: white;">
-
+                <div class="healthbar text-center" :style="{width: monster + '%'}" style="background-color: green; margin: 0; color: white;">
+                    {{monster}}
                 </div>
             </div>
         </div>
     </section>
-    <section class="row controls">
+    <section class="row controls" v-if="!start">
         <div class="small-12 columns">
-            <button id="start-game">START NEW GAME</button>
+            <button id="start-game" v-on:click="start = true" >START NEW GAME</button>
         </div>
     </section>
-    <section class="row controls">
+    <section class="row controls" v-else>
         <div class="small-12 columns">
-            <button id="attack">ATTACK</button>
-            <button id="special-attack">SPECIAL ATTACK</button>
-            <button id="heal">HEAL</button>
-            <button id="give-up">GIVE UP</button>
+            <button id="attack" v-on:click="attack">ATTACK</button>
+            <button id="special-attack" v-on:click="super_attack">SPECIAL ATTACK</button>
+            <button id="heal" v-on:click="heal">HEAL</button>
+            <button id="give-up" v-on:click="giveUp">GIVE UP</button>
         </div>
     </section>
-    <section class="row log">
+    <section class="row log" v-if="logs.length != 0">
         <div class="small-12 columns">
             <ul>
-                <li>
-
-                </li>
+              <template v-for="(value,index) in logs">
+                  <li v-if="index % 2 === 0" class="player-turn"> Player hit monster by {{value}}  </li>
+                  <li v-else class="monster-turn"> Monster hit player by {{value}}  </li>
+              </template>
             </ul>
         </div>
     </section>
 </div>
 </body>
+
+<script>
+  new Vue({
+    el: "#app",
+
+    data: {
+      start: false,
+      you: 100,
+      monster: 100,
+      logs: []
+    },
+    methods: {
+      attack: function() {
+        var damageToYou = Math.floor(Math.random() * 17)
+        var damageToMonster = Math.floor(Math.random() * 20)
+        this.monster -= damageToMonster
+        this.you -= damageToYou
+        this.updatePlayer(damageToYou)
+        this.updateMonster(damageToMonster)
+      },
+      super_attack: function() {
+        var damageToYou = Math.floor(Math.random() * 25)
+        var damageToMonster = Math.floor(Math.random() * 30)
+        this.monster -= damageToMonster
+        this.you -= damageToYou
+        this.updatePlayer(damageToYou)
+        this.updateMonster(damageToMonster)
+      },
+      heal: function() {
+        this.you += Math.floor(Math.random() * 10)
+        this.you -= Math.floor(Math.random() * 7)
+      },
+      giveUp: function() {
+        this.start = false
+      },
+      updatePlayer: function(value) {
+        this.logs.unshift(value)
+      },
+      updateMonster: function(value) {
+        this.logs.unshift(value)
+      }
+    },
+    watch: {
+      you: function() {
+        if (this.you < 1) {
+          var vm = this
+          setTimeout(function() {
+            alert("Monster won! Game over")
+            vm.start = false
+            vm.you = 100
+            vm.monster = 100
+            vm.logs = []
+          }, 100)
+        }
+      },
+      monster: function() {
+        if (this.monster < 1) {
+          var vm = this
+          setTimeout(function() {
+            alert("You win! Congratilations!!")
+            vm.start = false
+            vm.you = 100
+            vm.monster = 100
+            vm.logs = []
+          }, 100)
+        }
+      }
+    }
+  })
+
+
+</script>
+
+
 </html>
+
