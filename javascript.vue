@@ -33,13 +33,19 @@ new Vue({
       this.updatePlayer(-damageToYou)
     },
     giveUp: function() {
-      this.start = false
+      this.newGame()
     },
     updatePlayer: function(value) {
       this.logs.unshift(value)
     },
     updateMonster: function(value) {
       this.logs.unshift(value)
+    },
+    newGame: function() {
+      this.start = false
+      this.you = 100
+      this.monster = 100
+      this.logs = []
     }
   },
   watch: {
@@ -48,11 +54,8 @@ new Vue({
         var vm = this
         setTimeout(function() {
           alert("Monster won! Game over")
-          vm.start = false
-          vm.you = 100
-          vm.monster = 100
-          vm.logs = []
-        }, 100)
+          vm.newGame()
+        }, 50)
       }
       else if (this.you >= 100) {
         this.you = 100
@@ -63,11 +66,8 @@ new Vue({
         var vm = this
         setTimeout(function() {
           alert("You won! Congratulations!!")
-          vm.start = false
-          vm.you = 100
-          vm.monster = 100
-          vm.logs = []
-        }, 100)
+          vm.newGame()
+        }, 50)
       }
     }
   }
