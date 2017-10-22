@@ -43,9 +43,9 @@
         <div class="small-12 columns">
             <ul>
               <template v-for="(value,index) in logs">
-                  <li v-if="value < 0" class="player-turn"> Player heals himself by {{-1 * value}} </li>
-                  <li v-else-if="index % 2 === 0 && index > -1" class="player-turn"> Player hit monster by {{value}}  </li>
-                  <li v-else class="monster-turn"> Monster hit player by {{value}}  </li>
+                  <li v-if="value < 0" class="player-turn"> Player heals himself for {{-1 * value}} </li>
+                  <li v-else-if="index % 2 === 0 && index > -1" class="player-turn"> Player hits monster for {{value}}  </li>
+                  <li v-else class="monster-turn"> Monster hits player for {{value}}  </li>
               </template>
             </ul>
         </div>

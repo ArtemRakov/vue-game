@@ -62,7 +62,7 @@ new Vue({
       if (this.monster < 1) {
         var vm = this
         setTimeout(function() {
-          alert("You win! Congratilations!!")
+          alert("You won! Congratulations!!")
           vm.start = false
           vm.you = 100
           vm.monster = 100
