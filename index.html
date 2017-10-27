@@ -5,6 +5,8 @@
     <script src="https://npmcdn.com/vue/dist/vue.js"></script>
     <link rel="stylesheet" href="css/foundation.min.css">
     <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 </head>
 <body>
 <div id="app">
@@ -43,9 +45,11 @@
         <div class="small-12 columns">
             <ul>
               <template v-for="(value,index) in logs">
-                  <li v-if="value < 0" class="player-turn"> Player heals himself for {{-1 * value}} </li>
-                  <li v-else-if="index % 2 === 0 && index > -1" class="player-turn"> Player hits monster for {{value}}  </li>
-                  <li v-else class="monster-turn"> Monster hits player for {{value}}  </li>
+                  <transition-group enter-active-class="animated fadeInLeft" >
+                    <li v-if="value < 0" class="player-turn" :key="(value + index)"> Player heals himself for {{-1 * value}} </li>
+                    <li v-else-if="index % 2 === 0 && index > -1" class="player-turn" :key="(value + index)"> Player hits monster for {{value}}  </li>
+                    <li v-else class="monster-turn" :key="(value + index)"> Monster hits player for {{value}}  </li>
+                  </transition-group>
               </template>
             </ul>
         </div>
